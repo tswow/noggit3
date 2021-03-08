@@ -18,10 +18,9 @@ namespace noggit
 
     struct chunk
     {
-      chunk(selection* sel, MapChunk* chunk);
+      chunk(MapChunk* chunk);
       chunk() = default;
       MapChunk* _chunk;
-      selection* _sel;
       int _vert_index = -1;
       int _tex_index = -1;
     };

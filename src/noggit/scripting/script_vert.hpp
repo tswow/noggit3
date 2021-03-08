@@ -42,6 +42,9 @@ namespace noggit
     bool vert_next_tex(vert& vert);
     void vert_reset_tex(vert& vert);
 
+    bool vert_in_selection_rect(vert const& vert, selection const& sel);
+    bool vert_in_selection_circle(vert const& vert, selection const& sel);
+
     tex vert_get_tex(vert& vert);
     bool vert_is_water_aligned(vert const& chunk);
 

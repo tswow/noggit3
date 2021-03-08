@@ -2,6 +2,7 @@
 #include <noggit/scripting/script_vert.hpp>
 #include <noggit/scripting/script_vert-script_texture_index.ipp>
 #include <noggit/scripting/script_exception.hpp>
+#include <noggit/scripting/script_math.hpp>
 
 #include <vector>
 
@@ -26,6 +27,19 @@ namespace noggit
     tex::tex(MapChunk* chunk, int index)
       : _chunk(chunk), _index(index)
     {
+    }
+
+    bool vert_in_selection_rect(vert const& vert, selection const& sel)
+    {
+      auto pos = vert_get_pos(vert);
+      return !(pos.x <= sel._min.x || pos.x >= sel._max.x ||
+          pos.z <= sel._min.z || pos.z >= sel._max.z);
+    }
+
+    bool vert_in_selection_circle(vert const& vert, selection const& sel)
+    {
+      return vert_in_selection_rect(vert,sel) 
+        && point_in_circle(vert_get_pos(vert),sel_center(sel),sel._half_size.x);
     }
 
     void vert_set_height(vert& vert, float value)

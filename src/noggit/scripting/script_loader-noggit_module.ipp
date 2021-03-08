@@ -199,6 +199,8 @@ public:
     FUNC(noggit::scripting::vert_get_alpha, "vert_get_alpha", worstDefault);
     FUNC(noggit::scripting::vert_next_tex, "vert_next_tex", worstDefault);
     FUNC(noggit::scripting::vert_reset_tex, "vert_reset_tex", worstDefault);
+    FUNC(noggit::scripting::vert_in_selection_rect, "vert_in_selection_rect", worstDefault);
+    FUNC(noggit::scripting::vert_in_selection_circle, "vert_in_selection_circle", worstDefault);
     FUNC_RETCLASS(noggit::scripting::vert_get_tex, "vert_get_tex", worstDefault);
     FUNC(noggit::scripting::vert_is_water_aligned, "vert_is_water_aligned", worstDefault);
     FUNC(noggit::scripting::tex_get_alpha, "tex_get_alpha", worstDefault);

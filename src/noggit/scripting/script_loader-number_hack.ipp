@@ -125,6 +125,12 @@ namespace wraps {
   }
 
   template <typename A>
+  bool point_in_circle(math::vector_3d const& point, math::vector_3d const& origin, A radius)
+  {
+    return noggit::scripting::point_in_circle(point, origin,radius);
+  }
+
+  template <typename A>
   float abs(A arg)
   {
     return noggit::scripting::abs(arg);
@@ -136,8 +142,14 @@ namespace wraps {
     return noggit::scripting::add_float_param(path, min, max, def, zeros);
   }
 
+  template <typename A>
+  selection select_origin(math::vector_3d const &origin, A xRadius)
+  {
+    return noggit::scripting::select_origin(origin, xRadius, xRadius);
+  }
+
   template <typename A, typename B>
-  selection select_origin(math::vector_3d const &origin, A xRadius, B zRadius)
+  selection select_origin_sep(math::vector_3d const &origin, A xRadius, B zRadius)
   {
     return noggit::scripting::select_origin(origin, xRadius, zRadius);
   }
@@ -225,10 +237,12 @@ void register_hack_functions(das::Module *module, das::ModuleLibrary &lib)
   FUNC_NUM_2(wraps::rand_float, "rand_float", worstDefault);
   FUNC_NUM_3(wraps::lerp, "lerp", worstDefault);
   FUNC_NUM_3(wraps::add_float_param, "add_float_param", worstDefault);
+  FUNC_NUM_1(wraps::point_in_circle, "point_in_circle", worstDefault);
 
   FUNC_NUM_1_RETCLASS(wraps::rotate_2d, "rotate_2d", worstDefault);
   FUNC_NUM_1_RETCLASS(wraps::make_noise_size, "make_noise_size", worstDefault);
   FUNC_NUM_1_RETCLASS(wraps::make_noise_selection, "make_noise_selection", worstDefault);
-  FUNC_NUM_2_RETCLASS(wraps::select_origin, "select_origin", worstDefault);
+  FUNC_NUM_1_RETCLASS(wraps::select_origin, "select_origin", worstDefault);
+  FUNC_NUM_2_RETCLASS(wraps::select_origin_sep, "select_origin", worstDefault);
   FUNC_NUM_3_RETCLASS(wraps::vec, "vec", worstDefault);
 }

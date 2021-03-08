@@ -684,7 +684,7 @@ def random_from_time(): random
     pass
 
 [export]
-def select_origin(origin: vector_3d, x_radius: int|float, z_radius: int|float): selection
+def select_origin(origin: vector_3d, x_radius: int|float, z_radius?: int|float): selection
     pass
 
 [export]
@@ -853,6 +853,21 @@ def vert_next_tex(vert& vert): bool
 
 [export]
 def vert_reset_tex(vert& vert)
+    pass
+
+/**
+ * Returns true if v is inside the box that makes up s
+ */
+[export]
+def vert_in_selection_rect(v: vert, s: selection): bool
+    pass
+
+/**
+ * Returns true if v is inside the circle inside s.
+ * @note: Uses the first (x) radius of the selection. 
+ */
+[export]
+def vert_in_selection_circle(v: vert, s: selection): bool
     pass
 
 [export]

@@ -26,7 +26,8 @@ namespace noggit
         std::max(point1.z, point2.z));
 
       sel._size = sel._max - sel._min;
-      sel._center = sel._min + (sel._size / 2);
+      sel._half_size = sel._size/2;
+      sel._center = sel._min + sel._half_size;
       sel._models = model_iterator(sel._world, sel._min, sel._max);
       return sel;
     }
@@ -82,7 +83,7 @@ namespace noggit
           "sel_get_chunk",
           "accessing invalid chunk: iterator is done");
       }
-      return chunk(&sel, sel.get_chunks()[sel._cur_chunk]);
+      return chunk(sel.get_chunks()[sel._cur_chunk]);
     }
 
     bool sel_next_model(selection& sel, das::Context * ctx)

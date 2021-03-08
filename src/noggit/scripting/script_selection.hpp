@@ -34,6 +34,7 @@ namespace noggit
       math::vector_3d _min;
       math::vector_3d _max;
       math::vector_3d _size;
+      math::vector_3d _half_size;
 
       int _chunks_size = 0;
       

@@ -36,5 +36,6 @@ namespace noggit
     float dist_2d(math::vector_3d const& from, math::vector_3d const& to);
     int dist_2d_compare(math::vector_3d const& from, math::vector_3d const& to, float dist);
     math::vector_3d rotate_2d(math::vector_3d const& point, math::vector_3d const& origin, float angleDeg);
+    bool point_in_circle(math::vector_3d const& point, math::vector_3d const& origin, float radius);
   } // namespace scripting
 } // namespace noggit

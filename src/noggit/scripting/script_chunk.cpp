@@ -2,7 +2,6 @@
 #include <daScript/daScript.h> // must be on top
 
 #include <noggit/scripting/script_chunk.hpp>
-#include <noggit/scripting/script_selection.hpp>
 #include <noggit/scripting/script_context.hpp>
 #include <noggit/scripting/script_heap.hpp>
 #include <noggit/scripting/script_exception.hpp>
@@ -16,10 +15,9 @@ namespace noggit
 {
   namespace scripting
   {
-    chunk::chunk(selection* sel, MapChunk* chunk)
+    chunk::chunk(MapChunk* chnk)
     {
-      _sel = sel;
-      _chunk = chunk;
+      _chunk = chnk;
     }
 
     void chunk_set_hole(chunk& chunk, bool hole)
@@ -114,32 +112,11 @@ namespace noggit
       return chunk._tex_index < 4096;
     }
 
-    static void skip_vertices(chunk& chunk)
-    {
-      auto sel = chunk._sel;
-      if (sel == nullptr)
-        return;
-      while (is_on_vert(chunk))
-      {
-        auto& vert = chunk._chunk->mVertices[chunk._vert_index];
-        if (vert.x <= sel->_min.x || vert.x >= sel->_max.x ||
-          vert.z <= sel->_min.z || vert.z >= sel->_max.z)
-        {
-          ++chunk._vert_index;
-        }
-        else
-        {
-          break;
-        }
-      }
-    }
-
     bool chunk_next_vert(chunk& chunk)
     {
       ++chunk._vert_index;
       if (is_on_vert(chunk))
       {
-        skip_vertices(chunk);
         return is_on_vert(chunk);
       }
       else

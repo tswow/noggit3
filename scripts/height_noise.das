@@ -43,6 +43,8 @@ def left_hold()
 
 		while chunk_next_vert(chunk)
 			var vert = chunk_get_vert(chunk)
+			if !vert_in_selection_circle(sel)
+				continue
 			var loc = vert_get_pos(vert);
 			var height = noise_get(map,loc)*amp;
 			vert_set_height(vert,height);

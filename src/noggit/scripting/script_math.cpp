@@ -55,5 +55,10 @@ namespace noggit
 
       return math::vector_3d(nx, point.y, nz);
     }
+
+    bool point_in_circle(math::vector_3d const& point, math::vector_3d const& origin, float radius)
+    {
+      return sqrt(pow(point.x-origin.x,2)+pow(point.z-origin.z,2))<radius;
+    }
   } // namespace scripting
 } // namespace noggit
