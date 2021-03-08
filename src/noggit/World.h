@@ -102,6 +102,9 @@ public:
             , bool draw_paintability_overlay
             , bool draw_chunk_flag_overlay
             , bool draw_areaid_overlay
+#ifdef NOGGIT_HAS_SCRIPTING
+            , bool draw_script_overlay
+#endif
             //! \todo passing editing_mode is _so_ wrong, I don't believe I'm doing this
             , editing_mode
             , math::vector_3d const& camera_pos

@@ -351,6 +351,9 @@ void MapTile::draw ( math::frustum const& frustum
                    , bool draw_paintability_overlay
                    , bool draw_chunk_flag_overlay
                    , bool draw_areaid_overlay
+#ifdef NOGGIT_HAS_SCRIPTING
+                   , bool draw_script_overlay
+#endif
                    , std::map<int, misc::random_color>& area_id_colors
                    , int animtime
                    , display_mode display
@@ -375,6 +378,9 @@ void MapTile::draw ( math::frustum const& frustum
                           , draw_paintability_overlay
                           , draw_chunk_flag_overlay
                           , draw_areaid_overlay
+#ifdef NOGGIT_HAS_SCRIPTING
+                          , draw_script_overlay
+#endif
                           , area_id_colors
                           , animtime
                           , display

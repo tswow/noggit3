@@ -2447,6 +2447,9 @@ void MapView::draw_map()
                , terrainMode == editing_mode::paint
                , terrainMode == editing_mode::flags
                , terrainMode == editing_mode::areaid
+#ifdef NOGGIT_HAS_SCRIPTING
+               , terrainMode == editing_mode::scripting
+#endif
                , terrainMode
                , _camera.position
                , _camera_moved_since_last_draw

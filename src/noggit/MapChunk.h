@@ -94,6 +94,11 @@ public:
   MapChunkHeader header;
 
   float xbase, ybase, zbase;
+#ifdef NOGGIT_HAS_SCRIPTING
+  // caches script overlay values for this chunk
+  unsigned long _script_overlay_dirty_ctr = 0;
+  bool _script_overlay_last_draw = false;
+#endif
 
   mcnk_flags header_flags;
   bool use_big_alphamap;
@@ -133,6 +138,9 @@ public:
             , bool draw_paintability_overlay
             , bool draw_chunk_flag_overlay
             , bool draw_areaid_overlay
+#ifdef NOGGIT_HAS_SCRIPTING
+            , bool draw_script_overlay
+#endif
             , std::map<int, misc::random_color>& area_id_colors
             , int animtime
             , display_mode display

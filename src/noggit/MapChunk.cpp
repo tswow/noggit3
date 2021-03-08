@@ -1,4 +1,7 @@
 // This file is part of Noggit3, licensed under GNU General Public License (version 3).
+#ifdef NOGGIT_HAS_SCRIPTING
+#include <noggit/scripting/script_chunk.hpp>
+#endif
 
 #include <math/frustum.hpp>
 #include <math/quaternion.hpp>
@@ -523,6 +526,9 @@ void MapChunk::draw ( math::frustum const& frustum
                     , bool draw_paintability_overlay
                     , bool draw_chunk_flag_overlay
                     , bool draw_areaid_overlay
+#ifdef NOGGIT_HAS_SCRIPTING
+                    , bool draw_script_overlay
+#endif
                     , std::map<int, misc::random_color>& area_id_colors
                     , int animtime
                     , display_mode display
@@ -579,6 +585,18 @@ void MapChunk::draw ( math::frustum const& frustum
 
   mcnk_shader.uniform("layer_count", (int)texture_set->num());
   mcnk_shader.uniform("cant_paint", (int)cantPaint);
+
+  if (draw_script_overlay)
+  {
+    if(noggit::scripting::chunk_has_overlay_int(this))
+    {
+      mcnk_shader.uniform ("draw_impassible_flag", 1);
+    }
+    else
+    {
+      mcnk_shader.uniform ("draw_impassible_flag", 0);
+    }
+  }
 
   if (draw_chunk_flag_overlay)
   {

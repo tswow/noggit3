@@ -182,5 +182,45 @@ namespace noggit
         math::vector_3d (1.f, 1.f, 1.f)
       );
     }
+    
+    //! \todo should probably be tied to the context
+    static std::set<std::pair<float,float>> overlay_chunks;
+
+    static unsigned long dirty_counter = 0;
+    void chunk_set_overlay(chunk& chunk, bool draw)
+    {
+      if(draw)
+      {
+        overlay_chunks.insert(std::make_pair(chunk._chunk->xbase,chunk._chunk->zbase));
+      }
+      else
+      {
+        overlay_chunks.erase(std::make_pair(chunk._chunk->xbase,chunk._chunk->zbase));
+      }
+      ++dirty_counter;
+    }
+
+    void chunk_clear_overlays()
+    {
+      overlay_chunks.clear();
+      ++dirty_counter;
+    }
+
+    bool chunk_has_overlay(chunk& chnk)
+    {
+      return chunk_has_overlay_int(chnk._chunk);
+    }
+
+    bool chunk_has_overlay_int(MapChunk* chnk)
+    {
+      if(chnk->_script_overlay_dirty_ctr==dirty_counter)
+      {
+        return chnk->_script_overlay_last_draw;
+      }
+      bool value = overlay_chunks.find(std::make_pair(chnk->xbase,chnk->zbase)) 
+        != overlay_chunks.end();
+      chnk->_script_overlay_last_draw = value;
+      return value;
+    }
   } // namespace scripting
 } // namespace noggit

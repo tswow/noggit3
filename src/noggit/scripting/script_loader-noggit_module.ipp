@@ -170,6 +170,9 @@ public:
     FUNC_RETCLASS(noggit::scripting::sel_size, "sel_size", worstDefault);
 
     // script_chunk.hpp
+    FUNC(noggit::scripting::chunk_set_overlay, "chunk_set_overlay",worstDefault);
+    FUNC(noggit::scripting::chunk_has_overlay, "chunk_has_overlay",worstDefault);
+    FUNC(noggit::scripting::chunk_clear_overlays, "chunk_clear_overlays",worstDefault);
     FUNC(noggit::scripting::chunk_set_hole, "chunk_set_hole", worstDefault);
     FUNC(noggit::scripting::chunk_remove_texture, "chunk_remove_texture", worstDefault);
     FUNC(noggit::scripting::chunk_get_texture, "chunk_get_texture", worstDefault);

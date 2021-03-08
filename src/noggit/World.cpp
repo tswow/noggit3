@@ -824,6 +824,9 @@ void World::draw ( math::matrix_4x4 const& model_view
                  , bool draw_paintability_overlay
                  , bool draw_chunk_flag_overlay
                  , bool draw_areaid_overlay
+#ifdef NOGGIT_HAS_SCRIPTING
+                 , bool draw_script_overlay
+#endif
                  , editing_mode terrainMode
                  , math::vector_3d const& camera_pos
                  , bool camera_moved
@@ -1102,6 +1105,9 @@ void World::draw ( math::matrix_4x4 const& model_view
                  , draw_paintability_overlay
                  , draw_chunk_flag_overlay
                  , draw_areaid_overlay
+#ifdef NOGGIT_HAS_SCRIPTING
+                 , draw_script_overlay
+#endif
                  , area_id_colors
                  , animtime
                  , display

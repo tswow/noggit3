@@ -8,6 +8,8 @@ namespace das {
   class Context;
 }
 
+class MapChunk;
+
 namespace noggit
 {
   namespace scripting
@@ -43,5 +45,11 @@ namespace noggit
     void chunk_reset_tex_itr(chunk& chunk);
     vert chunk_get_vert(chunk const& chunk);
     tex chunk_get_tex(chunk const& chunk);
+
+    void chunk_clear_overlays();
+    void chunk_set_overlay(chunk& chunk, bool draw);
+    bool chunk_has_overlay(chunk& chunk);
+
+    bool chunk_has_overlay_int(MapChunk* chunk);
   } // namespace scripting
 } // namespace noggit

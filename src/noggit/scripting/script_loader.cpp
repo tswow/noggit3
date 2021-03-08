@@ -6,6 +6,7 @@
 #include <noggit/scripting/script_loader.hpp>
 #include <noggit/scripting/script_filesystem.hpp>
 #include <noggit/scripting/scripting_tool.hpp>
+#include <noggit/scripting/script_chunk.hpp>
 
 static bool initialized = false;
 static int cur_script = -1;
@@ -180,6 +181,7 @@ namespace noggit
 
     int load_scripts()
     {
+      chunk_clear_overlays();
       if (!initialized)
       {
         initialized = true;
