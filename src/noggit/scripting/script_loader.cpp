@@ -5,6 +5,9 @@
 #include <noggit/scripting/script_filesystem.hpp>
 #include <noggit/scripting/scripting_tool.hpp>
 
+#include <sol/sol.hpp>
+#include <noggit/scripting/script_loader-noggit_module.ipp>
+
 static bool initialized = false;
 static int cur_script = -1;
 
@@ -15,40 +18,17 @@ struct script_container
   script_container(
       std::string name,
       std::string display_name,
-      void* ctx,
-      bool select,
-      bool left_click,
-      bool left_hold,
-      bool left_release,
-      bool right_click,
-      bool right_hold,
-      bool right_release) : _ctx(ctx),
+      std::function<void()> left_click) :
                             _name(name),
                             _display_name(display_name),
-                            _on_select(select),
-                            _on_left_click(left_click),
-                            _on_left_hold(left_hold),
-                            _on_left_release(left_release),
-                            _on_right_click(right_click),
-                            _on_right_hold(right_hold),
-                            _on_right_release(right_release)
+                            _on_left_click(left_click)
   {
   }
   script_container() = default;
 
-  void *_ctx = nullptr;
   std::string _name;
   std::string _display_name;
-
-  bool _on_select = false;
-
-  bool _on_left_click = false;
-  bool _on_left_hold = false;
-  bool _on_left_release = false;
-
-  bool _on_right_click = false;
-  bool _on_right_hold = false;
-  bool _on_right_release = false;
+  std::function<void()> _on_left_click;
 };
 
 static std::vector<script_container> containers;
@@ -65,6 +45,18 @@ static script_container *get_container()
 static bool ends_with(std::string const &str, std::string const &suffix)
 {
   return str.size() >= suffix.size() && 0 == str.compare(str.size() - suffix.size(), suffix.size(), suffix);
+}
+
+std::function<void()> global_cb;
+
+static void register_script(std::string name, std::function<void()> cb)
+{
+  global_cb = cb;
+}
+
+static void print(std::string value)
+{
+  get_cur_tool()->addLog(value);
 }
 
 namespace noggit
@@ -99,12 +91,14 @@ namespace noggit
     }
 
     void send_left_click(){}
-    void send_left_hold(){}
+    void send_left_hold() { if (global_cb) global_cb(); }
     void send_left_release(){}
 
     void send_right_click(){}
     void send_right_hold(){}
     void send_right_release(){}
+
+    sol::state * lua;
 
     int load_scripts()
     {
@@ -112,12 +106,13 @@ namespace noggit
       cur_script = -1;
       int new_index = -1;
 
-      for (auto &ctr : containers)
-      {
-        // There may be a better way to do this
-        // with the reset/resetHeap calls.
-        delete ctr._ctx;
-      }
+      // TODO: leak
+      lua = new sol::state();
+
+      lua->set_function("register_script",register_script);
+      lua->set_function("print",print);
+      register_functions(lua);
+
       containers.clear();
 
       boost::filesystem::recursive_directory_iterator dir("scripts"), end;
@@ -131,6 +126,15 @@ namespace noggit
         if (!ends_with(file, ".lua") || ends_with(file, ".spec.lua"))
           continue;
 
+        get_cur_tool()->addLog(file);
+
+        try {
+          lua->script_file(file);
+        }
+        catch (std::exception e) {
+          get_cur_tool()->addLog("File error!");
+        }
+
         if (false)
         {
           get_cur_tool()->setStyleSheet("background-color: #f0a5a5;");
@@ -143,10 +147,6 @@ namespace noggit
           }
           */
           get_cur_tool()->resetLogScroll();
-          for (auto &ctr : containers)
-          {
-            delete ctr._ctx;
-          }
           containers.clear();
           return -1;
         }
@@ -167,14 +167,7 @@ namespace noggit
           containers.push_back(script_container(
               module_name,
               display_name,
-              new char[1],
-              true,
-              true,
-              true,
-              true,
-              true,
-              true,
-              true));
+              nullptr));
         }
       }
 
